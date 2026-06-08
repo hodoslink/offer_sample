@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPF·DKIM·DMARC — Doc Interne</title>
+<title>SPF·DKIM·DMARC — Process Commercial</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Noto+Sans+JP:wght@400;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap');
 :root {
@@ -14,6 +14,8 @@
   --red-light: #fde8e8;
   --blue: #1a3f8f;
   --blue-light: #e8eef8;
+  --green: #16a34a;
+  --green-light: #f0fdf4;
   --panel-border: 3px solid #0d0d0d;
   --thick: 4px solid #0d0d0d;
   --panel-shadow: 5px 5px 0 #0d0d0d;
@@ -100,10 +102,10 @@ p:last-child { margin-bottom: 0; }
 .callout::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; }
 .callout.info::before { background: var(--blue); }
 .callout.warn::before { background: #f59e0b; }
-.callout.success::before { background: #16a34a; }
+.callout.success::before { background: var(--green); }
 .callout.info { background: var(--blue-light); color: var(--blue); }
 .callout.warn { background: #fffbeb; color: #92400e; }
-.callout.success { background: #f0fdf4; color: #14532d; }
+.callout.success { background: var(--green-light); color: #14532d; }
 .callout strong { font-weight: 700; }
 .burst-wrap { display: flex; align-items: flex-start; gap: 12px; margin: 16px 0; }
 .burst-icon { background: var(--red); color: #fff; font-family: var(--font-title); font-size: 20px; padding: 6px 10px; flex-shrink: 0; border: 2px solid var(--ink); letter-spacing: .04em; line-height: 1; }
@@ -120,21 +122,6 @@ p:last-child { margin-bottom: 0; }
 .manga-table td:first-child { font-weight: 700; }
 .manga-table td code { font-family: var(--font-mono); font-size: 11.5px; background: #f0ede6; border: 1px solid #ccc; padding: 1px 5px; }
 code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; border: 1px solid #bbb; padding: 1px 5px; }
-.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; border: var(--panel-border); box-shadow: var(--panel-shadow); }
-.team-card { background: #fff; padding: 18px 16px; border-right: 2px solid var(--ink); position: relative; overflow: hidden; }
-.team-card:last-child { border-right: none; }
-.team-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; }
-.team-card.dircom::before { background: var(--red); }
-.team-card.pm::before { background: var(--blue); }
-.team-card.sdr::before { background: #059669; }
-.team-card-role { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: .12em; color: #888; margin-bottom: 4px; margin-top: 2px; }
-.team-card-name { font-family: var(--font-title); font-size: 22px; letter-spacing: .06em; margin-bottom: 4px; }
-.team-card.dircom .team-card-name { color: var(--red); }
-.team-card.pm .team-card-name { color: var(--blue); }
-.team-card.sdr .team-card-name { color: #059669; }
-.team-card-tasks { list-style: none; display: flex; flex-direction: column; gap: 4px; margin-top: 10px; border-top: 1.5px solid var(--ink); padding-top: 10px; }
-.team-card-tasks li { font-size: 12.5px; color: #333; padding-left: 12px; position: relative; line-height: 1.4; }
-.team-card-tasks li::before { content: '→'; position: absolute; left: 0; color: #999; font-size: 10px; }
 .steps { display: flex; flex-direction: column; gap: 0; margin-top: 20px; }
 .step { display: grid; grid-template-columns: 52px 1fr; gap: 0; border: 2px solid var(--ink); border-bottom: none; background: #fff; }
 .step:first-child { border-top: var(--thick); }
@@ -145,14 +132,25 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
 .step:last-child .step-dot { display: none; }
 .step-body { padding: 14px 16px; }
 .step-title { font-family: var(--font-title); font-size: 17px; letter-spacing: .06em; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.step-who { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: .06em; padding: 2px 7px; border: 1.5px solid; font-weight: 600; }
-.step-who.dircom { border-color: var(--red); color: var(--red); background: var(--red-light); }
-.step-who.pm { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
-.step-who.sdr { border-color: #059669; color: #059669; background: #f0fdf4; }
-.step-who.both { border-color: #7c3aed; color: #7c3aed; background: #f5f3ff; }
-.step-who.presta { border-color: #0891b2; color: #0891b2; background: #ecfeff; }
-.step-who.client { border-color: #ca8a04; color: #ca8a04; background: #fefce8; }
+.step-tag { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: .06em; padding: 2px 7px; border: 1.5px solid; font-weight: 600; }
+.step-tag.prospect { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+.step-tag.contact { border-color: var(--red); color: var(--red); background: var(--red-light); }
+.step-tag.sale { border-color: var(--green); color: var(--green); background: var(--green-light); }
+.step-tag.delivery { border-color: #7c3aed; color: #7c3aed; background: #f5f3ff; }
 .step-desc { font-size: 13px; color: #444; line-height: 1.6; }
+.package-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: var(--panel-border); box-shadow: var(--panel-shadow); }
+.package-card { background: #fff; padding: 18px 16px; border-right: 2px solid var(--ink); position: relative; overflow: hidden; }
+.package-card:last-child { border-right: none; }
+.package-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; }
+.package-card.audit::before { background: var(--blue); }
+.package-card.plan::before { background: var(--red); }
+.package-card.deploy::before { background: var(--green); }
+.package-card-num { font-family: var(--font-title); font-size: 36px; letter-spacing: .04em; line-height: 1; margin-bottom: 6px; }
+.package-card.audit .package-card-num { color: var(--blue); }
+.package-card.plan .package-card-num { color: var(--red); }
+.package-card.deploy .package-card-num { color: var(--green); }
+.package-card-title { font-family: var(--font-title); font-size: 18px; letter-spacing: .06em; margin-bottom: 8px; }
+.package-card-desc { font-size: 12.5px; color: #444; line-height: 1.5; }
 .risk-list { display: flex; flex-direction: column; gap: 0; border: var(--panel-border); box-shadow: var(--panel-shadow); }
 .risk-item { display: grid; grid-template-columns: 56px 1fr; gap: 0; background: #fff; border-bottom: 2px solid var(--ink); }
 .risk-item:last-child { border-bottom: none; }
@@ -171,9 +169,9 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
   .layout, .doc-footer { padding: 0 16px; }
   .header-inner { padding: 24px 16px; flex-direction: column; }
   .header-title { font-size: 36px; }
-  .team-grid { grid-template-columns: 1fr; }
-  .team-card { border-right: none; border-bottom: 2px solid var(--ink); }
-  .team-card:last-child { border-bottom: none; }
+  .package-grid { grid-template-columns: 1fr; }
+  .package-card { border-right: none; border-bottom: 2px solid var(--ink); }
+  .package-card:last-child { border-bottom: none; }
 }
 </style>
 </head>
@@ -187,12 +185,12 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
       <div class="icon-label">Sec. Email</div>
     </div>
     <div class="header-text">
-      <div class="header-breadcrumb">Documentation interne · Offres de service</div>
+      <div class="header-breadcrumb">Documentation interne · Process commercial</div>
       <div class="header-title">SPF·DKIM·DMARC</div>
-      <div class="header-subtitle">Sécurisation Identité Email — PME & E-commerce</div>
+      <div class="header-subtitle">Sécurisation Email — PME & E-commerce</div>
       <div class="header-badges">
         <span class="hbadge red">Usage interne</span>
-        <span class="hbadge white">v1.1</span>
+        <span class="hbadge white">v2.0</span>
         <span class="hbadge green">Actif</span>
       </div>
     </div>
@@ -207,12 +205,11 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
       <div class="toc-title">Sommaire</div>
       <ul>
         <li><a href="#offre"><span class="toc-num">01</span>L'offre</a></li>
-        <li><a href="#equipe"><span class="toc-num">02</span>L'équipe</a></li>
-        <li><a href="#processus"><span class="toc-num">03</span>Processus</a></li>
-        <li><a href="#prestataires"><span class="toc-num">04</span>Prestataires</a></li>
+        <li><a href="#process"><span class="toc-num">02</span>Le process</a></li>
+        <li><a href="#package"><span class="toc-num">03</span>Le package</a></li>
+        <li><a href="#paiement"><span class="toc-num">04</span>Paiement</a></li>
         <li><a href="#risques"><span class="toc-num">05</span>Risques</a></li>
-        <li><a href="#modele"><span class="toc-num">06</span>Modèle éco.</a></li>
-        <li><a href="#glossaire"><span class="toc-num">07</span>Glossaire</a></li>
+        <li><a href="#glossaire"><span class="toc-num">06</span>Glossaire</a></li>
       </ul>
     </div>
   </nav>
@@ -225,191 +222,134 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
         <div class="section-num">01</div>
         <div class="section-title-wrap">
           <h2>Ce que l'on vend</h2>
-          <div class="section-tagline">Périmètre de l'offre</div>
+          <div class="section-tagline">En termes simples</div>
         </div>
       </div>
       <div class="panel">
         <div class="sfx">SECURE!!</div>
-        <p>Nous proposons un <strong>service de sécurisation de l'identité email</strong> destiné aux PME et aux e-commerces. L'objectif est de protéger les entreprises contre l'<strong>usurpation de leur domaine email</strong> — un vecteur d'attaque courant permettant à des tiers malveillants d'envoyer des emails en se faisant passer pour l'entreprise.</p>
-        <p>Le service couvre l'ensemble du cycle, de l'identification des cibles jusqu'au suivi post-déploiement. Nous ne réalisons pas l'exécution technique : nous sourçons, sélectionnons et coordonnons des prestataires qualifiés qui prennent en charge l'audit, le plan de remédiation et la mise en œuvre.</p>
-      </div>
-      <h3>Périmètre de l'offre</h3>
-      <div class="manga-table-wrap">
-        <table class="manga-table">
-          <thead><tr><th>Composante</th><th>Ce que cela recouvre</th><th>Qui l'exécute</th></tr></thead>
-          <tbody>
-            <tr><td>Stratégie commerciale</td><td>Définition des cibles, des segments prioritaires et des arguments de vente</td><td>Directeur Commercial</td></tr>
-            <tr><td>Prospection & qualification</td><td>Identification des contacts, outreach outbound, pré-qualification des leads</td><td>SDR</td></tr>
-            <tr><td>Vente & closing</td><td>Appel de vente avec le décideur, présentation de l'offre, transformation en client payant</td><td>Directeur Commercial</td></tr>
-            <tr><td>Audit SPF / DKIM / DMARC</td><td>Analyse de la configuration DNS existante, identification des incohérences et vulnérabilités</td><td>Prestataire</td></tr>
-            <tr><td>Plan de remédiation</td><td>Feuille de route technique priorisée, séquençage des actions DNS, recommandations de politique DMARC progressive</td><td>Prestataire</td></tr>
-            <tr><td>Sélection du prestataire</td><td>Identification et qualification du prestataire technique adapté à la mission</td><td>Directeur Commercial + Chef de projet</td></tr>
-            <tr><td>Coordination & suivi</td><td>Briefing du prestataire, suivi des livrables, relation client de bout en bout, validation post-déploiement</td><td>Chef de projet</td></tr>
-          </tbody>
-        </table>
+        <p>On vend de la <strong>sécurisation email</strong>. Concrètement, on protège les entreprises contre le fait que quelqu'un puisse envoyer des emails en se faisant passer pour elles.</p>
+        <p>Quand une entreprise n'a pas configuré correctement son domaine email, n'importe qui peut usurper son identité pour envoyer de faux emails à ses clients, ses fournisseurs ou ses employés. C'est un vecteur d'attaque très courant (phishing, arnaque au faux président, fraude fournisseur).</p>
+        <p>Notre prestation consiste à <strong>auditer</strong> la configuration actuelle, <strong>proposer un plan</strong> pour corriger les failles, puis <strong>appliquer ce plan</strong> avec un prestataire technique. Le client achète un résultat clé-en-main.</p>
       </div>
       <div class="callout info" style="margin-top:16px;">
-        <strong>🛡 Pourquoi c'est important pour nos clients</strong><br>
-        Un domaine mal configuré expose les clients finaux de nos clients à des emails frauduleux envoyés en leur nom — phishing, fraudes aux fournisseurs, usurpation de support. La correction protège aussi la délivrabilité des emails légitimes.
+        <strong>🛡 Pourquoi les clients achètent</strong><br>
+        Ils veulent éviter que leur nom de domaine soit utilisé pour des arnaques. Ils veulent aussi s'assurer que leurs propres emails arrivent bien dans la boîte de réception de leurs clients (et pas en spam).
       </div>
     </section>
 
     <section class="section">
-      <a class="section-anchor" id="equipe"></a>
+      <a class="section-anchor" id="process"></a>
       <div class="section-header">
         <div class="section-num">02</div>
         <div class="section-title-wrap">
-          <h2>Organisation de l'équipe</h2>
-          <div class="section-tagline">Qui fait quoi</div>
-        </div>
-      </div>
-      <div class="team-grid">
-        <div class="team-card dircom">
-          <div class="team-card-role">Direction Commerciale</div>
-          <div class="team-card-name">Directeur Commercial</div>
-          <ul class="team-card-tasks">
-            <li>Définition des cibles commerciales et des segments prioritaires</li>
-            <li>Fourniture des cibles et arguments de vente au SDR</li>
-            <li>Conduite des appels de vente et closing auprès des décideurs</li>
-            <li>Identification du prestataire adapté avec le chef de projet</li>
-            <li>Structuration et évolution de l'offre commerciale</li>
-          </ul>
-        </div>
-        <div class="team-card pm">
-          <div class="team-card-role">Opérations</div>
-          <div class="team-card-name">Chef de projet</div>
-          <ul class="team-card-tasks">
-            <li>Prise en charge du dossier après vente</li>
-            <li>Gestion de la relation client au quotidien</li>
-            <li>Suivi des livrables et des délais</li>
-            <li>Coordination et briefing des prestataires</li>
-            <li>Vérification des livrables techniques</li>
-            <li>Compte-rendus et jalons de suivi</li>
-            <li>Escalade vers le Directeur Commercial si anomalie</li>
-          </ul>
-        </div>
-        <div class="team-card sdr">
-          <div class="team-card-role">Croissance</div>
-          <div class="team-card-name">SDR</div>
-          <ul class="team-card-tasks">
-            <li>Prospection outbound sur les cibles fournies (email, LinkedIn)</li>
-            <li>Qualification initiale des leads</li>
-            <li>Prise de RDV pour l'appel de vente</li>
-            <li>Formalisation de la commande après closing</li>
-            <li>Alimentation et mise à jour du CRM</li>
-            <li>Reporting hebdomadaire sur le pipeline</li>
-          </ul>
-        </div>
-      </div>
-      <div class="burst-wrap" style="margin-top:16px;">
-        <div class="burst-icon">!</div>
-        <div class="burst-body">
-          <strong>Principe de fonctionnement</strong>
-          Le Directeur Commercial définit la stratégie, convainc et close. Le SDR prospecte et qualifie. Le chef de projet prend en charge l'opérationnel et le suivi. Les prestataires exécutent l'audit, le plan de remédiation et le déploiement sous supervision.
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <a class="section-anchor" id="processus"></a>
-      <div class="section-header">
-        <div class="section-num">03</div>
-        <div class="section-title-wrap">
-          <h2>Processus de bout en bout</h2>
-          <div class="section-tagline">7 étapes · de la cible à la validation</div>
+          <h2>Le process</h2>
+          <div class="section-tagline">De l'identification à la livraison</div>
         </div>
       </div>
       <div class="steps">
         <div class="step">
           <div class="step-left"><div class="step-num">1</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Stratégie commerciale <span class="step-who dircom">Dir. Com.</span></div>
-            <div class="step-desc">Le Directeur Commercial identifie les segments de marché à cibler (PME avec activité transactionnelle email, e-commerce, SaaS B2B). Il définit les critères de ciblage, prépare les arguments de vente et les transmet au SDR pour le lancement des campagnes de prospection.</div>
+            <div class="step-title">Identification du client <span class="step-tag prospect">Prospection</span></div>
+            <div class="step-desc">On repère les entreprises qui ont un domaine email custom et qui envoient des emails à leurs clients (PME, e-commerces, SaaS B2B). Ce sont des cibles prioritaires car elles ont un vrai besoin de sécurisation. On vérifie rapidement si leur domaine est bien configuré ou non.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-left"><div class="step-num">2</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Prospection & qualification <span class="step-who sdr">SDR</span></div>
-            <div class="step-desc">Le SDR prospecte les cibles fournies par email et LinkedIn. Il effectue une première approche, pré-qualifie selon des critères simples (taille de l'entreprise, présence d'un domaine email custom, usage de plateformes d'envoi type Mailchimp, Klaviyo, Sendinblue…) et prend des RDV pour l'appel de vente.</div>
+            <div class="step-title">Prise de contact <span class="step-tag contact">Contact</span></div>
+            <div class="step-desc">On contacte le décideur (dirigeant, DSI, responsable ops) par email ou LinkedIn. L'objectif est d'obtenir un échange de 15–20 minutes pour comprendre son environnement email et lui expliquer les risques liés à une mauvaise configuration.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-left"><div class="step-num">3</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Appel de vente & closing <span class="step-who dircom">Dir. Com.</span></div>
-            <div class="step-desc">Le Directeur Commercial mène un appel de 20–30 minutes avec le décideur (CEO, DSI, responsable ops). Il présente l'offre, met en lumière les risques liés à l'usurpation email, répond aux objections et convainc le décideur de souscrire à la prestation.</div>
+            <div class="step-title">Proposition du package <span class="step-tag contact">Contact</span></div>
+            <div class="step-desc">Lors de l'échange, on présente notre offre complète : <strong>audit + plan de remédiation + application du plan</strong>. On explique ce que chaque étape apporte, le délai global, et le prix. Le client reçoit une proposition formalisée par email.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-left"><div class="step-num">4</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Commande & paiement <span class="step-who client">Client</span></div>
-            <div class="step-desc">Le client convaincu confirme sa commande par email et règle la prestation. Le SDR formalise l'entrée en production dans le CRM et transmet le dossier au chef de projet pour la suite des opérations.</div>
+            <div class="step-title">Paiement en ligne <span class="step-tag sale">Vente</span></div>
+            <div class="step-desc">Si le client est convaincu, il règle la prestation directement en ligne via un lien de paiement sécurisé. Pas de devis à signer, pas de virement à faire : tout se passe en quelques clics. Dès réception du paiement, le dossier est lancé.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-left"><div class="step-num">5</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Brief prestataire & lancement <span class="step-who both">CP + Dir. Com.</span></div>
-            <div class="step-desc">Le Chef de projet prend en charge le dossier. Avec le Directeur Commercial, ils identifient et sélectionnent le prestataire technique le mieux adapté au projet (compétences DNS, disponibilité, coût). Le CP prépare ensuite un brief précis : périmètre, accès requis, livrables attendus, délais.</div>
+            <div class="step-title">Audit & plan <span class="step-tag delivery">Livraison</span></div>
+            <div class="step-desc">Le prestataire technique réalise l'audit de la configuration DNS du client. Il identifie les failles et rédige un plan de remédiation détaillé. Ce plan est validé avec le client avant toute modification.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-left"><div class="step-num">6</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Audit, remédiation & déploiement <span class="step-who presta">Prestataire + CP</span></div>
-            <div class="step-desc">Le prestataire réalise l'audit technique des enregistrements DNS (<code>SPF</code>, <code>DKIM</code>, <code>DMARC</code>), élabore le plan de remédiation et exécute les modifications. Le Chef de projet supervise l'intervention, valide les livrables et s'assure du respect du planning. Aucune modification n'est faite sans validation du client.</div>
+            <div class="step-title">Application du plan <span class="step-tag delivery">Livraison</span></div>
+            <div class="step-desc">Le prestataire applique les modifications validées : mise à jour des enregistrements SPF, configuration DKIM, mise en place de la politique DMARC. Le déploiement est progressif pour éviter tout blocage d'emails légitimes.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-left"><div class="step-num">7</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Validation & suivi post-déploiement <span class="step-who pm">Chef de projet</span></div>
-            <div class="step-desc">Post-déploiement, le chef de projet effectue des tests d'envoi et vérifie les enregistrements DNS. Les rapports DMARC sont analysés sur les 2–4 premières semaines pour s'assurer qu'aucun flux légitime n'est bloqué. Un compte-rendu final est transmis au client. En cas d'anomalie, le Directeur Commercial est impliqué pour décision.</div>
+            <div class="step-title">Validation & suivi <span class="step-tag delivery">Livraison</span></div>
+            <div class="step-desc">Post-déploiement, on vérifie que tout fonctionne correctement : tests d'envoi, analyse des rapports DMARC sur 2–4 semaines. Un compte-rendu final est transmis au client. Si une anomalie apparaît, elle est corrigée rapidement.</div>
           </div>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <a class="section-anchor" id="prestataires"></a>
+      <a class="section-anchor" id="package"></a>
       <div class="section-header">
-        <div class="section-num">04</div>
+        <div class="section-num">03</div>
         <div class="section-title-wrap">
-          <h2>Rôle des prestataires externes</h2>
-          <div class="section-tagline">Périmètre d'intervention</div>
+          <h2>Le package</h2>
+          <div class="section-tagline">Ce qui est inclus dans la prestation</div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:var(--panel-border);box-shadow:var(--panel-shadow);">
-        <div style="background:#fff;padding:16px 18px;border-right:2px solid var(--ink);">
-          <h3 style="color:#059669;">Ce qu'ils font</h3>
-          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
-            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Réalisation de l'audit technique des enregistrements DNS</li>
-            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Élaboration du plan de remédiation et de la stratégie DMARC</li>
-            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Modifications des enregistrements DNS chez le registrar du client</li>
-            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Configuration DKIM dans Microsoft 365 ou Google Workspace</li>
-            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Mise à jour des enregistrements SPF selon le plan défini</li>
-            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Création ou modification de la politique DMARC</li>
-            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Documentation des accès et des modifications réalisées</li>
-          </ul>
+      <div class="package-grid">
+        <div class="package-card audit">
+          <div class="package-card-num">01</div>
+          <div class="package-card-title">Audit</div>
+          <div class="package-card-desc">Analyse complète de la configuration email du client. On vérifie les enregistrements DNS (SPF, DKIM, DMARC), on identifie les flux email actifs et les failles de sécurité. On produit un rapport clair avec un score de risque.</div>
         </div>
-        <div style="background:var(--paper2);padding:16px 18px;">
-          <h3 style="color:var(--red);">Ce qu'ils ne font pas</h3>
-          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
-            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Contact commercial direct avec le client</li>
-            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Prendre des décisions sur le périmètre ou la séquence</li>
-            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Accéder aux informations commerciales ou contractuelles</li>
-            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Définir la stratégie commerciale ou les cibles de vente</li>
-          </ul>
+        <div class="package-card plan">
+          <div class="package-card-num">02</div>
+          <div class="package-card-title">Plan de remédiation</div>
+          <div class="package-card-desc">Sur la base de l'audit, on rédige une feuille de route technique : quelles modifications faire, dans quel ordre, avec quels risques. Le plan est validé avec le client avant toute action. C'est la garantie qu'on ne casse rien.</div>
+        </div>
+        <div class="package-card deploy">
+          <div class="package-card-num">03</div>
+          <div class="package-card-title">Application du plan</div>
+          <div class="package-card-desc">On applique les modifications validées : mise à jour des DNS, configuration DKIM, déploiement progressif de la politique DMARC. On supervise tout et on vérifie que les emails légitimes continuent de bien arriver.</div>
         </div>
       </div>
       <div class="burst-wrap" style="margin-top:16px;">
         <div class="burst-icon">!</div>
         <div class="burst-body">
-          <strong>Point de vigilance</strong>
-          Le prestataire n'intervient qu'avec un brief écrit validé par le chef de projet. Toute demande de modification hors périmètre doit être remontée avant exécution. Le prestataire est un exécutant technique, pas un décideur.
+          <strong>Ce que le client achète</strong>
+          Il n'achète pas de la technique. Il achète la certitude que son domaine est sécurisé, que personne ne peut plus usurper son identité email, et que ses emails arrivent bien chez ses clients. On s'occupe de tout.
         </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <a class="section-anchor" id="paiement"></a>
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div class="section-title-wrap">
+          <h2>Paiement</h2>
+          <div class="section-tagline">Simple et rapide</div>
+        </div>
+      </div>
+      <div class="panel">
+        <p>Le paiement se fait <strong>en ligne</strong>, dès que le client a validé la proposition. Pas de devis papier, pas de virement bancaire à attendre : un lien de paiement sécurisé est envoyé par email, le client règle en quelques clics (carte bancaire).</p>
+        <p>Dès réception du paiement, le dossier est lancé et le prestataire technique est briefé. Le client reçoit une confirmation par email avec les prochaines étapes et le calendrier prévisionnel.</p>
+      </div>
+      <div class="callout success" style="margin-top:16px;">
+        <strong>💡 Avantages du paiement en ligne</strong><br>
+        Zéro friction pour le client. Pas de relance à faire. Le cash est encaissé immédiatement. Le process peut démarrer le jour même.
       </div>
     </section>
 
@@ -418,94 +358,63 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
       <div class="section-header">
         <div class="section-num">05</div>
         <div class="section-title-wrap">
-          <h2>Risques &amp; points de vigilance</h2>
-          <div class="section-tagline">Anticiper les effets de bord</div>
+          <h2>Risques &amp; vigilance</h2>
+          <div class="section-tagline">Ce qu'il faut savoir</div>
         </div>
       </div>
       <div class="risk-list">
         <div class="risk-item">
           <div class="risk-num-col"><div class="risk-emoji">⚡</div></div>
           <div class="risk-body">
-            <strong>Emails légitimes bloqués ou mis en quarantaine</strong>
-            <p>Si la politique DMARC est passée directement à <code>reject</code> sans phase intermédiaire <code>none</code> puis <code>quarantine</code>, des flux email légitimes non déclarés dans SPF peuvent être bloqués. Toujours adopter une montée en charge progressive.</p>
+            <strong>Emails légitimes bloqués</strong>
+            <p>Si on active la protection trop vite, des emails légitimes peuvent être bloqués. C'est pour ça qu'on déploie toujours de façon progressive et qu'on surveille les rapports pendant plusieurs semaines.</p>
           </div>
         </div>
         <div class="risk-item">
           <div class="risk-num-col"><div class="risk-emoji">🔄</div></div>
           <div class="risk-body">
-            <strong>Absence de rollback DNS préparé</strong>
-            <p>Avant toute modification DNS, le prestataire doit documenter l'état exact des enregistrements. En cas de problème, le rollback doit pouvoir être exécuté en moins de 30 minutes. Exiger cette documentation à chaque mission.</p>
-          </div>
-        </div>
-        <div class="risk-item">
-          <div class="risk-num-col"><div class="risk-emoji">📋</div></div>
-          <div class="risk-body">
-            <strong>Absence de checklist pré-mise en production</strong>
-            <p>Chaque mission doit s'appuyer sur une checklist standardisée : inventaire des flux email actifs, validation des accès DNS, test sur un domaine de staging si possible, confirmation client avant déploiement.</p>
+            <strong>Retour arrière possible</strong>
+            <p>Avant toute modification, on sauvegarde la configuration actuelle. Si un problème survient, on peut revenir en arrière en moins de 30 minutes. C'est systématique.</p>
           </div>
         </div>
         <div class="risk-item">
           <div class="risk-num-col"><div class="risk-emoji">📤</div></div>
           <div class="risk-body">
-            <strong>Flux email non cartographiés</strong>
-            <p>Les clients utilisent souvent des outils tiers (CRM, e-commerce, outil marketing) qui envoient des emails en leur nom. Si ces expéditeurs ne sont pas inclus dans le SPF ou ne disposent pas de DKIM configuré, ils seront en échec DMARC.</p>
+            <strong>Outils tiers non déclarés</strong>
+            <p>Les clients utilisent souvent des outils externes (Mailchimp, Klaviyo, CRM…) qui envoient des emails en leur nom. Si ces outils ne sont pas déclarés dans la configuration, leurs emails peuvent être bloqués. On les identifie tous avant d'agir.</p>
           </div>
         </div>
         <div class="risk-item">
           <div class="risk-num-col"><div class="risk-emoji">⏱</div></div>
           <div class="risk-body">
-            <strong>Délais de propagation DNS</strong>
-            <p>Les modifications DNS ont un TTL qui conditionne la propagation mondiale. Une modification peut prendre de quelques minutes à 48 heures. Il ne faut pas interpréter une non-mise à jour immédiate comme un échec.</p>
+            <strong>Délai de propagation</strong>
+            <p>Les modifications DNS mettent de quelques minutes à 48 heures pour être visibles partout dans le monde. Ce n'est pas un bug, c'est le fonctionnement normal d'internet.</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <a class="section-anchor" id="modele"></a>
-      <div class="section-header">
-        <div class="section-num">06</div>
-        <div class="section-title-wrap">
-          <h2>Modèle économique</h2>
-          <div class="section-tagline">Achat · revente · marge</div>
-        </div>
-      </div>
-      <div class="manga-table-wrap">
-        <table class="manga-table">
-          <thead><tr><th>Élément</th><th>Description</th></tr></thead>
-          <tbody>
-            <tr><td>Achat prestataire</td><td>Facturation à la tâche ou au forfait par le prestataire technique. Coût variable selon la complexité (nombre de domaines, environnements à configurer).</td></tr>
-            <tr><td>Revente client</td><td>Package forfaitisé comprenant la coordination, le suivi et la garantie de résultat. Le client achète une prestation clé-en-main, pas de la régie technique.</td></tr>
-            <tr><td>Marge opérationnelle</td><td>Générée par la valeur ajoutée de la coordination, de la sélection du bon prestataire et de la gestion du risque pour le client.</td></tr>
-            <tr><td>Levier de scalabilité</td><td>En standardisant le processus de vente et le brief prestataire, le temps du Directeur Commercial par mission diminue. Le chef de projet peut gérer plusieurs missions en parallèle.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="callout success" style="margin-top:16px;">
-        <strong>💡 Principe clé</strong><br>
-        Le client ne paye pas pour des heures de configuration DNS. Il paye pour la certitude que le travail est bien fait, que les risques sont gérés, et qu'il n'a pas à coordonner lui-même des prestataires techniques qu'il ne sait pas briefer.
       </div>
     </section>
 
     <section class="section">
       <a class="section-anchor" id="glossaire"></a>
       <div class="section-header">
-        <div class="section-num">07</div>
+        <div class="section-num">06</div>
         <div class="section-title-wrap">
-          <h2>Glossaire technique simplifié</h2>
-          <div class="section-tagline">Pour les non-techniciens de l'équipe</div>
+          <h2>Glossaire</h2>
+          <div class="section-tagline">Pour comprendre sans être technique</div>
         </div>
       </div>
       <div class="manga-table-wrap">
         <table class="manga-table">
-          <thead><tr><th>Terme</th><th>Ce que c'est</th><th>À quoi ça sert</th></tr></thead>
+          <thead><tr><th>Terme</th><th>En français</th></tr></thead>
           <tbody>
-            <tr><td><code>SPF</code></td><td>Sender Policy Framework — liste des serveurs autorisés à envoyer des emails au nom d'un domaine</td><td>Empêche un serveur non autorisé d'envoyer des emails en se faisant passer pour le domaine</td></tr>
-            <tr><td><code>DKIM</code></td><td>DomainKeys Identified Mail — signature cryptographique attachée aux emails envoyés</td><td>Permet au destinataire de vérifier que l'email n'a pas été altéré et qu'il vient bien du domaine signataire</td></tr>
-            <tr><td><code>DMARC</code></td><td>Domain-based Message Authentication — politique qui indique quoi faire si SPF ou DKIM échoue</td><td>Définit si les emails frauduleux doivent être ignorés, mis en quarantaine ou rejetés ; génère des rapports</td></tr>
-            <tr><td>DNS</td><td>Domain Name System — système d'enregistrements associés à un nom de domaine</td><td>C'est là que sont stockés SPF, DKIM et DMARC. Modifier le DNS = modifier les règles d'authentification email</td></tr>
-            <tr><td>TTL</td><td>Time To Live — durée de validité d'un enregistrement DNS en cache</td><td>Détermine le délai de propagation d'une modification DNS dans le monde entier</td></tr>
-            <tr><td>Rollback</td><td>Retour à la configuration précédente</td><td>Procédure de sécurité pour annuler une modification DNS problématique rapidement</td></tr>
+            <tr><td><code>SPF</code></td><td>Une liste qui dit quels serveurs ont le droit d'envoyer des emails au nom de l'entreprise. Si un serveur n'est pas dans la liste, son email est suspect.</td></tr>
+            <tr><td><code>DKIM</code></td><td>Une signature numérique ajoutée à chaque email. Elle prouve que l'email n'a pas été modifié en cours de route et qu'il vient bien du bon domaine.</td></tr>
+            <tr><td><code>DMARC</code></td><td>La règle qui dit quoi faire quand un email échoue les vérifications SPF ou DKIM : l'ignorer, le mettre en quarantaine ou le rejeter. C'est le bouclier final.</td></tr>
+            <tr><td>DNS</td><td>L'annuaire d'internet. C'est là que sont stockés SPF, DKIM et DMARC. Modifier le DNS, c'est modifier les règles de sécurité email.</td></tr>
+            <tr><td>Domaine</td><td>L'adresse email après le @ (ex: entreprise.com). C'est l'identité email de l'entreprise.</td></tr>
+            <tr><td>Usurpation</td><td>Quand quelqu'un envoie un email en se faisant passer pour l'entreprise. C'est ce qu'on empêche avec SPF/DKIM/DMARC.</td></tr>
+            <tr><td>Phishing</td><td>Technique d'arnaque où on envoie de faux emails pour voler des informations (mots de passe, coordonnées bancaires). L'usurpation de domaine est un vecteur courant.</td></tr>
+            <tr><td>Délivrabilité</td><td>La capacité des emails légitimes à arriver dans la boîte de réception (et pas en spam). Une bonne configuration SPF/DKIM/DMARC améliore la délivrabilité.</td></tr>
           </tbody>
         </table>
       </div>
@@ -520,9 +429,9 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
     <span>·</span>
     <span class="red">SPF · DKIM · DMARC</span>
     <span>·</span>
-    <span>Offre Sécurisation Email</span>
+    <span>Process Commercial</span>
     <span>·</span>
-    <span>v1.1</span>
+    <span>v2.0</span>
   </div>
 </footer>
 
