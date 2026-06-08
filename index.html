@@ -124,12 +124,12 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
 .team-card { background: #fff; padding: 18px 16px; border-right: 2px solid var(--ink); position: relative; overflow: hidden; }
 .team-card:last-child { border-right: none; }
 .team-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; }
-.team-card.ceo::before { background: var(--red); }
+.team-card.dircom::before { background: var(--red); }
 .team-card.pm::before { background: var(--blue); }
 .team-card.sdr::before { background: #059669; }
 .team-card-role { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: .12em; color: #888; margin-bottom: 4px; margin-top: 2px; }
 .team-card-name { font-family: var(--font-title); font-size: 22px; letter-spacing: .06em; margin-bottom: 4px; }
-.team-card.ceo .team-card-name { color: var(--red); }
+.team-card.dircom .team-card-name { color: var(--red); }
 .team-card.pm .team-card-name { color: var(--blue); }
 .team-card.sdr .team-card-name { color: #059669; }
 .team-card-tasks { list-style: none; display: flex; flex-direction: column; gap: 4px; margin-top: 10px; border-top: 1.5px solid var(--ink); padding-top: 10px; }
@@ -146,10 +146,12 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
 .step-body { padding: 14px 16px; }
 .step-title { font-family: var(--font-title); font-size: 17px; letter-spacing: .06em; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .step-who { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: .06em; padding: 2px 7px; border: 1.5px solid; font-weight: 600; }
-.step-who.ceo { border-color: var(--red); color: var(--red); background: var(--red-light); }
+.step-who.dircom { border-color: var(--red); color: var(--red); background: var(--red-light); }
 .step-who.pm { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
 .step-who.sdr { border-color: #059669; color: #059669; background: #f0fdf4; }
 .step-who.both { border-color: #7c3aed; color: #7c3aed; background: #f5f3ff; }
+.step-who.presta { border-color: #0891b2; color: #0891b2; background: #ecfeff; }
+.step-who.client { border-color: #ca8a04; color: #ca8a04; background: #fefce8; }
 .step-desc { font-size: 13px; color: #444; line-height: 1.6; }
 .risk-list { display: flex; flex-direction: column; gap: 0; border: var(--panel-border); box-shadow: var(--panel-shadow); }
 .risk-item { display: grid; grid-template-columns: 56px 1fr; gap: 0; background: #fff; border-bottom: 2px solid var(--ink); }
@@ -190,7 +192,7 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
       <div class="header-subtitle">Sécurisation Identité Email — PME & E-commerce</div>
       <div class="header-badges">
         <span class="hbadge red">Usage interne</span>
-        <span class="hbadge white">v1.0</span>
+        <span class="hbadge white">v1.1</span>
         <span class="hbadge green">Actif</span>
       </div>
     </div>
@@ -229,18 +231,20 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
       <div class="panel">
         <div class="sfx">SECURE!!</div>
         <p>Nous proposons un <strong>service de sécurisation de l'identité email</strong> destiné aux PME et aux e-commerces. L'objectif est de protéger les entreprises contre l'<strong>usurpation de leur domaine email</strong> — un vecteur d'attaque courant permettant à des tiers malveillants d'envoyer des emails en se faisant passer pour l'entreprise.</p>
-        <p>Le service couvre l'ensemble du cycle, de l'identification des cibles jusqu'au suivi post-déploiement. Nous ne réalisons pas l'exécution technique : nous sourçons, sélectionnons et coordonnons des prestataires qualifiés qui prennent en charge l'audit et la mise en œuvre.</p>
+        <p>Le service couvre l'ensemble du cycle, de l'identification des cibles jusqu'au suivi post-déploiement. Nous ne réalisons pas l'exécution technique : nous sourçons, sélectionnons et coordonnons des prestataires qualifiés qui prennent en charge l'audit, le plan de remédiation et la mise en œuvre.</p>
       </div>
       <h3>Périmètre de l'offre</h3>
       <div class="manga-table-wrap">
         <table class="manga-table">
           <thead><tr><th>Composante</th><th>Ce que cela recouvre</th><th>Qui l'exécute</th></tr></thead>
           <tbody>
-            <tr><td>Audit SPF / DKIM / DMARC</td><td>Analyse de la configuration DNS existante, identification des incohérences et vulnérabilités</td><td>CEO + prestataire</td></tr>
-            <tr><td>Analyse des risques</td><td>Évaluation de l'exposition à l'usurpation, scoring du risque, cartographie des flux email (marketing, transactionnel, support)</td><td>CEO</td></tr>
-            <tr><td>Plan de remédiation</td><td>Feuille de route technique priorisée, séquençage des actions DNS, recommandations de politique DMARC progressive</td><td>CEO</td></tr>
-            <tr><td>Coordination prestataire</td><td>Sélection, briefing et supervision du prestataire technique qui implémente les changements DNS</td><td>Chef de projet</td></tr>
-            <tr><td>Suivi de mise en place</td><td>Vérification post-déploiement, tests d'envoi, validation des rapports DMARC, ajustements si nécessaire</td><td>Chef de projet + prestataire</td></tr>
+            <tr><td>Stratégie commerciale</td><td>Définition des cibles, des segments prioritaires et des arguments de vente</td><td>Directeur Commercial</td></tr>
+            <tr><td>Prospection & qualification</td><td>Identification des contacts, outreach outbound, pré-qualification des leads</td><td>SDR</td></tr>
+            <tr><td>Vente & closing</td><td>Appel de vente avec le décideur, présentation de l'offre, transformation en client payant</td><td>Directeur Commercial</td></tr>
+            <tr><td>Audit SPF / DKIM / DMARC</td><td>Analyse de la configuration DNS existante, identification des incohérences et vulnérabilités</td><td>Prestataire</td></tr>
+            <tr><td>Plan de remédiation</td><td>Feuille de route technique priorisée, séquençage des actions DNS, recommandations de politique DMARC progressive</td><td>Prestataire</td></tr>
+            <tr><td>Sélection du prestataire</td><td>Identification et qualification du prestataire technique adapté à la mission</td><td>Directeur Commercial + Chef de projet</td></tr>
+            <tr><td>Coordination & suivi</td><td>Briefing du prestataire, suivi des livrables, relation client de bout en bout, validation post-déploiement</td><td>Chef de projet</td></tr>
           </tbody>
         </table>
       </div>
@@ -260,37 +264,38 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
         </div>
       </div>
       <div class="team-grid">
-        <div class="team-card ceo">
-          <div class="team-card-role">Fondateur</div>
-          <div class="team-card-name">CEO</div>
+        <div class="team-card dircom">
+          <div class="team-card-role">Direction Commerciale</div>
+          <div class="team-card-name">Directeur Commercial</div>
           <ul class="team-card-tasks">
-            <li>Conception et structuration de l'offre</li>
-            <li>Réalisation des audits techniques</li>
-            <li>Production du plan de remédiation</li>
-            <li>Relation client stratégique (décideurs)</li>
-            <li>Validation finale avant mise en prod</li>
-            <li>Sélection et qualification des prestataires</li>
+            <li>Définition des cibles commerciales et des segments prioritaires</li>
+            <li>Fourniture des cibles et arguments de vente au SDR</li>
+            <li>Conduite des appels de vente et closing auprès des décideurs</li>
+            <li>Identification du prestataire adapté avec le chef de projet</li>
+            <li>Structuration et évolution de l'offre commerciale</li>
           </ul>
         </div>
         <div class="team-card pm">
           <div class="team-card-role">Opérations</div>
           <div class="team-card-name">Chef de projet</div>
           <ul class="team-card-tasks">
+            <li>Prise en charge du dossier après vente</li>
             <li>Gestion de la relation client au quotidien</li>
             <li>Suivi des livrables et des délais</li>
             <li>Coordination et briefing des prestataires</li>
             <li>Vérification des livrables techniques</li>
             <li>Compte-rendus et jalons de suivi</li>
-            <li>Escalade vers le CEO si anomalie</li>
+            <li>Escalade vers le Directeur Commercial si anomalie</li>
           </ul>
         </div>
         <div class="team-card sdr">
           <div class="team-card-role">Croissance</div>
           <div class="team-card-name">SDR</div>
           <ul class="team-card-tasks">
-            <li>Prospection outbound (email, LinkedIn)</li>
+            <li>Prospection outbound sur les cibles fournies (email, LinkedIn)</li>
             <li>Qualification initiale des leads</li>
-            <li>Prise de RDV pour l'appel de qualification</li>
+            <li>Prise de RDV pour l'appel de vente</li>
+            <li>Formalisation de la commande après closing</li>
             <li>Alimentation et mise à jour du CRM</li>
             <li>Reporting hebdomadaire sur le pipeline</li>
           </ul>
@@ -300,7 +305,7 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
         <div class="burst-icon">!</div>
         <div class="burst-body">
           <strong>Principe de fonctionnement</strong>
-          Le SDR génère et pré-qualifie. Le CEO valide et audite. Le chef de projet opère et suit. Les prestataires exécutent sous supervision. Ce découpage permet de tenir la qualité sans sur-solliciter le CEO sur les tâches courantes.
+          Le Directeur Commercial définit la stratégie, convainc et close. Le SDR prospecte et qualifie. Le chef de projet prend en charge l'opérationnel et le suivi. Les prestataires exécutent l'audit, le plan de remédiation et le déploiement sous supervision.
         </div>
       </div>
     </section>
@@ -311,57 +316,57 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
         <div class="section-num">03</div>
         <div class="section-title-wrap">
           <h2>Processus de bout en bout</h2>
-          <div class="section-tagline">7 étapes · du lead à la validation</div>
+          <div class="section-tagline">7 étapes · de la cible à la validation</div>
         </div>
       </div>
       <div class="steps">
         <div class="step">
           <div class="step-left"><div class="step-num">1</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Génération du lead <span class="step-who sdr">SDR</span></div>
-            <div class="step-desc">Le SDR identifie des prospects (PME avec activité transactionnelle email, e-commerce, SaaS B2B). Il effectue une première approche et pré-qualifie selon des critères simples : taille de l'entreprise, présence d'un domaine email custom, usage de plateformes d'envoi (Mailchimp, Klaviyo, Sendinblue…).</div>
+            <div class="step-title">Stratégie commerciale <span class="step-who dircom">Dir. Com.</span></div>
+            <div class="step-desc">Le Directeur Commercial identifie les segments de marché à cibler (PME avec activité transactionnelle email, e-commerce, SaaS B2B). Il définit les critères de ciblage, prépare les arguments de vente et les transmet au SDR pour le lancement des campagnes de prospection.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-left"><div class="step-num">2</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Appel de qualification <span class="step-who ceo">CEO</span></div>
-            <div class="step-desc">Le CEO prend un appel de 20–30 minutes avec le décideur (CEO, DSI, responsable ops). Objectifs : comprendre l'environnement email, détecter la sensibilité au risque, évaluer la maturité technique et la capacité de décision. À l'issue, le CEO décide d'aller ou non vers un audit.</div>
+            <div class="step-title">Prospection & qualification <span class="step-who sdr">SDR</span></div>
+            <div class="step-desc">Le SDR prospecte les cibles fournies par email et LinkedIn. Il effectue une première approche, pré-qualifie selon des critères simples (taille de l'entreprise, présence d'un domaine email custom, usage de plateformes d'envoi type Mailchimp, Klaviyo, Sendinblue…) et prend des RDV pour l'appel de vente.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-left"><div class="step-num">3</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Analyse du besoin <span class="step-who ceo">CEO</span></div>
-            <div class="step-desc">Avant l'audit, le CEO documente le périmètre : domaines à couvrir, plateformes d'envoi actives, environnement de messagerie (Microsoft 365, Google Workspace, autre). Cette étape permet de dimensionner l'audit et de poser les bases du plan de remédiation.</div>
+            <div class="step-title">Appel de vente & closing <span class="step-who dircom">Dir. Com.</span></div>
+            <div class="step-desc">Le Directeur Commercial mène un appel de 20–30 minutes avec le décideur (CEO, DSI, responsable ops). Il présente l'offre, met en lumière les risques liés à l'usurpation email, répond aux objections et convainc le décideur de souscrire à la prestation.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-left"><div class="step-num">4</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Audit email <span class="step-who both">CEO + prest.</span></div>
-            <div class="step-desc">Analyse technique des enregistrements DNS : état des enregistrements <code>SPF</code>, <code>DKIM</code> et <code>DMARC</code>, présence de flux non déclarés, niveau de politique DMARC (<code>none</code> / <code>quarantine</code> / <code>reject</code>). L'audit produit un rapport structuré avec scoring de risque et liste des anomalies.</div>
+            <div class="step-title">Commande & paiement <span class="step-who client">Client</span></div>
+            <div class="step-desc">Le client convaincu confirme sa commande par email et règle la prestation. Le SDR formalise l'entrée en production dans le CRM et transmet le dossier au chef de projet pour la suite des opérations.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-left"><div class="step-num">5</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Plan de remédiation <span class="step-who ceo">CEO</span></div>
-            <div class="step-desc">Sur la base de l'audit, le CEO rédige un plan d'action priorisé. Il définit les modifications DNS à réaliser, la séquence de déploiement (toujours progressif pour DMARC), les risques associés à chaque étape et le rollback à prévoir. Ce plan est validé avec le client avant toute intervention.</div>
+            <div class="step-title">Brief prestataire & lancement <span class="step-who both">CP + Dir. Com.</span></div>
+            <div class="step-desc">Le Chef de projet prend en charge le dossier. Avec le Directeur Commercial, ils identifient et sélectionnent le prestataire technique le mieux adapté au projet (compétences DNS, disponibilité, coût). Le CP prépare ensuite un brief précis : périmètre, accès requis, livrables attendus, délais.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-left"><div class="step-num">6</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Intervention prestataire <span class="step-who pm">Chef de projet + prest.</span></div>
-            <div class="step-desc">Le prestataire technique reçoit un brief précis du chef de projet : liste des actions à réaliser, accès requis (DNS, Microsoft 365, Google Workspace), checklist de validation. Le chef de projet supervise l'intervention. Aucune modification n'est faite sans validation du plan par le CEO au préalable.</div>
+            <div class="step-title">Audit, remédiation & déploiement <span class="step-who presta">Prestataire + CP</span></div>
+            <div class="step-desc">Le prestataire réalise l'audit technique des enregistrements DNS (<code>SPF</code>, <code>DKIM</code>, <code>DMARC</code>), élabore le plan de remédiation et exécute les modifications. Le Chef de projet supervise l'intervention, valide les livrables et s'assure du respect du planning. Aucune modification n'est faite sans validation du client.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-left"><div class="step-num">7</div><div class="step-dot"></div></div>
           <div class="step-body">
-            <div class="step-title">Validation et suivi <span class="step-who pm">Chef de projet + CEO</span></div>
-            <div class="step-desc">Post-déploiement, le chef de projet effectue des tests d'envoi et vérifie les enregistrements DNS. Les rapports DMARC sont analysés sur les 2–4 premières semaines pour s'assurer qu'aucun flux légitime n'est bloqué. Un compte-rendu final est transmis au client. Si anomalie, le CEO est impliqué pour décision.</div>
+            <div class="step-title">Validation & suivi post-déploiement <span class="step-who pm">Chef de projet</span></div>
+            <div class="step-desc">Post-déploiement, le chef de projet effectue des tests d'envoi et vérifie les enregistrements DNS. Les rapports DMARC sont analysés sur les 2–4 premières semaines pour s'assurer qu'aucun flux légitime n'est bloqué. Un compte-rendu final est transmis au client. En cas d'anomalie, le Directeur Commercial est impliqué pour décision.</div>
           </div>
         </div>
       </div>
@@ -380,6 +385,8 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
         <div style="background:#fff;padding:16px 18px;border-right:2px solid var(--ink);">
           <h3 style="color:#059669;">Ce qu'ils font</h3>
           <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Réalisation de l'audit technique des enregistrements DNS</li>
+            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Élaboration du plan de remédiation et de la stratégie DMARC</li>
             <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Modifications des enregistrements DNS chez le registrar du client</li>
             <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Configuration DKIM dans Microsoft 365 ou Google Workspace</li>
             <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Mise à jour des enregistrements SPF selon le plan défini</li>
@@ -390,10 +397,10 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
         <div style="background:var(--paper2);padding:16px 18px;">
           <h3 style="color:var(--red);">Ce qu'ils ne font pas</h3>
           <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
-            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Concevoir le plan de remédiation (rôle CEO)</li>
             <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Contact commercial direct avec le client</li>
             <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Prendre des décisions sur le périmètre ou la séquence</li>
             <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Accéder aux informations commerciales ou contractuelles</li>
+            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Définir la stratégie commerciale ou les cibles de vente</li>
           </ul>
         </div>
       </div>
@@ -401,7 +408,7 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
         <div class="burst-icon">!</div>
         <div class="burst-body">
           <strong>Point de vigilance</strong>
-          Le prestataire n'intervient qu'avec un brief écrit validé par le CEO. Toute demande de modification hors périmètre doit être remontée au chef de projet avant exécution.
+          Le prestataire n'intervient qu'avec un brief écrit validé par le chef de projet. Toute demande de modification hors périmètre doit être remontée avant exécution. Le prestataire est un exécutant technique, pas un décideur.
         </div>
       </div>
     </section>
@@ -468,9 +475,9 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
           <thead><tr><th>Élément</th><th>Description</th></tr></thead>
           <tbody>
             <tr><td>Achat prestataire</td><td>Facturation à la tâche ou au forfait par le prestataire technique. Coût variable selon la complexité (nombre de domaines, environnements à configurer).</td></tr>
-            <tr><td>Revente client</td><td>Package forfaitisé comprenant l'audit, le plan, la coordination et le suivi. Le client achète une prestation clé-en-main, pas de la régie technique.</td></tr>
-            <tr><td>Marge opérationnelle</td><td>Générée par la valeur ajoutée de l'expertise (audit, analyse de risque, plan), la coordination du prestataire et la gestion du risque pour le client.</td></tr>
-            <tr><td>Levier de scalabilité</td><td>En standardisant les audits et les plans de remédiation, le temps CEO par mission diminue au fil du temps. Le chef de projet peut gérer plusieurs missions en parallèle.</td></tr>
+            <tr><td>Revente client</td><td>Package forfaitisé comprenant la coordination, le suivi et la garantie de résultat. Le client achète une prestation clé-en-main, pas de la régie technique.</td></tr>
+            <tr><td>Marge opérationnelle</td><td>Générée par la valeur ajoutée de la coordination, de la sélection du bon prestataire et de la gestion du risque pour le client.</td></tr>
+            <tr><td>Levier de scalabilité</td><td>En standardisant le processus de vente et le brief prestataire, le temps du Directeur Commercial par mission diminue. Le chef de projet peut gérer plusieurs missions en parallèle.</td></tr>
           </tbody>
         </table>
       </div>
@@ -515,7 +522,7 @@ code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; bord
     <span>·</span>
     <span>Offre Sécurisation Email</span>
     <span>·</span>
-    <span>v1.0</span>
+    <span>v1.1</span>
   </div>
 </footer>
 
