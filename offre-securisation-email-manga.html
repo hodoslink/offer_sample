@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPF·DKIM·DMARC — Doc Interne</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Noto+Sans+JP:wght@400;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap');
+:root {
+  --ink: #0d0d0d;
+  --paper: #faf8f2;
+  --paper2: #f2efe5;
+  --red: #d42b2b;
+  --red-light: #fde8e8;
+  --blue: #1a3f8f;
+  --blue-light: #e8eef8;
+  --panel-border: 3px solid #0d0d0d;
+  --thick: 4px solid #0d0d0d;
+  --panel-shadow: 5px 5px 0 #0d0d0d;
+  --font-title: 'Bangers', cursive;
+  --font-body: 'Noto Sans JP', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.7;
+  padding-bottom: 80px;
+  background-image: radial-gradient(circle, #c8c0a8 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+.doc-header {
+  background: var(--ink);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.speed-lines {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background: repeating-conic-gradient(from 0deg at 50% 50%, #fff 0deg 1deg, transparent 1deg 4deg, #fff 4deg 5deg, transparent 5deg 9deg);
+}
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 32px 28px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+.header-icon-box {
+  background: var(--red);
+  border: 3px solid #fff;
+  padding: 12px 16px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 3px 3px 0 #fff;
+}
+.header-icon-box .icon-big { font-size: 38px; line-height: 1; }
+.header-icon-box .icon-label { font-family: var(--font-mono); font-size: 8px; color: #fff; text-transform: uppercase; letter-spacing: .12em; margin-top: 4px; }
+.header-text { flex: 1; }
+.header-breadcrumb { font-family: var(--font-mono); font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px; }
+.header-title { font-family: var(--font-title); font-size: 52px; color: #fff; letter-spacing: .04em; line-height: 1; text-shadow: 3px 3px 0 var(--red); margin-bottom: 8px; }
+.header-subtitle { font-family: var(--font-title); font-size: 22px; color: #ccc; letter-spacing: .06em; margin-bottom: 14px; }
+.header-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.hbadge { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; padding: 3px 10px; border: 2px solid; font-weight: 600; }
+.hbadge.red { border-color: var(--red); color: var(--red); }
+.hbadge.white { border-color: #666; color: #bbb; }
+.hbadge.green { border-color: #4ade80; color: #4ade80; }
+.layout { max-width: 900px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: 190px 1fr; gap: 0 32px; align-items: start; }
+.toc { position: sticky; top: 24px; padding-top: 32px; }
+.toc-panel { background: var(--ink); border: var(--panel-border); box-shadow: var(--panel-shadow); padding: 14px 16px; }
+.toc-title { font-family: var(--font-title); font-size: 18px; color: var(--red); letter-spacing: .06em; margin-bottom: 10px; border-bottom: 2px solid #333; padding-bottom: 6px; }
+.toc ul { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+.toc ul li a { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; color: #bbb; text-decoration: none; padding: 5px 0; border-bottom: 1px solid #222; transition: color .1s; }
+.toc ul li a:hover { color: var(--red); }
+.toc ul li a .toc-num { font-size: 9px; color: var(--red); min-width: 16px; }
+.main { padding-top: 32px; min-width: 0; }
+.section { margin-bottom: 48px; }
+.section-anchor { display: block; height: 0; }
+.section-header { display: flex; align-items: stretch; gap: 0; margin-bottom: 20px; border: var(--panel-border); box-shadow: var(--panel-shadow); background: var(--paper); }
+.section-num { background: var(--ink); color: var(--red); font-family: var(--font-title); font-size: 28px; padding: 8px 14px; display: flex; align-items: center; justify-content: center; min-width: 60px; letter-spacing: .04em; flex-shrink: 0; }
+.section-title-wrap { padding: 10px 16px; display: flex; flex-direction: column; justify-content: center; }
+h2 { font-family: var(--font-title); font-size: 24px; font-weight: 400; letter-spacing: .08em; line-height: 1.1; color: var(--ink); }
+.section-tagline { font-family: var(--font-mono); font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: .1em; margin-top: 2px; }
+.panel { background: #fff; border: var(--panel-border); box-shadow: var(--panel-shadow); padding: 18px 20px; margin-bottom: 16px; position: relative; }
+h3 { font-family: var(--font-title); font-size: 16px; letter-spacing: .06em; margin: 0 0 10px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+h3::before { content: '◆'; color: var(--red); font-size: 10px; }
+p { margin-bottom: 10px; font-size: 14px; }
+p:last-child { margin-bottom: 0; }
+.callout { border: var(--panel-border); padding: 14px 16px 14px 22px; margin: 16px 0; font-size: 13.5px; position: relative; background: #fff; }
+.callout::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; }
+.callout.info::before { background: var(--blue); }
+.callout.warn::before { background: #f59e0b; }
+.callout.success::before { background: #16a34a; }
+.callout.info { background: var(--blue-light); color: var(--blue); }
+.callout.warn { background: #fffbeb; color: #92400e; }
+.callout.success { background: #f0fdf4; color: #14532d; }
+.callout strong { font-weight: 700; }
+.burst-wrap { display: flex; align-items: flex-start; gap: 12px; margin: 16px 0; }
+.burst-icon { background: var(--red); color: #fff; font-family: var(--font-title); font-size: 20px; padding: 6px 10px; flex-shrink: 0; border: 2px solid var(--ink); letter-spacing: .04em; line-height: 1; }
+.burst-body { font-size: 13.5px; color: var(--ink); }
+.burst-body strong { display: block; font-family: var(--font-title); font-size: 15px; letter-spacing: .04em; margin-bottom: 3px; }
+.manga-table-wrap { border: var(--panel-border); box-shadow: var(--panel-shadow); overflow: hidden; margin: 12px 0; }
+.manga-table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; }
+.manga-table th { background: var(--ink); color: #fff; font-family: var(--font-title); font-size: 12px; letter-spacing: .08em; padding: 8px 12px; text-align: left; border-right: 1px solid #333; }
+.manga-table th:last-child { border-right: none; }
+.manga-table td { padding: 9px 12px; border-bottom: 1.5px solid var(--ink); border-right: 1px solid #ccc; vertical-align: top; line-height: 1.5; }
+.manga-table td:last-child { border-right: none; }
+.manga-table tr:last-child td { border-bottom: none; }
+.manga-table tr:hover td { background: var(--paper2); }
+.manga-table td:first-child { font-weight: 700; }
+.manga-table td code { font-family: var(--font-mono); font-size: 11.5px; background: #f0ede6; border: 1px solid #ccc; padding: 1px 5px; }
+code { font-family: var(--font-mono); font-size: 12px; background: #f0ede6; border: 1px solid #bbb; padding: 1px 5px; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; border: var(--panel-border); box-shadow: var(--panel-shadow); }
+.team-card { background: #fff; padding: 18px 16px; border-right: 2px solid var(--ink); position: relative; overflow: hidden; }
+.team-card:last-child { border-right: none; }
+.team-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; }
+.team-card.ceo::before { background: var(--red); }
+.team-card.pm::before { background: var(--blue); }
+.team-card.sdr::before { background: #059669; }
+.team-card-role { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: .12em; color: #888; margin-bottom: 4px; margin-top: 2px; }
+.team-card-name { font-family: var(--font-title); font-size: 22px; letter-spacing: .06em; margin-bottom: 4px; }
+.team-card.ceo .team-card-name { color: var(--red); }
+.team-card.pm .team-card-name { color: var(--blue); }
+.team-card.sdr .team-card-name { color: #059669; }
+.team-card-tasks { list-style: none; display: flex; flex-direction: column; gap: 4px; margin-top: 10px; border-top: 1.5px solid var(--ink); padding-top: 10px; }
+.team-card-tasks li { font-size: 12.5px; color: #333; padding-left: 12px; position: relative; line-height: 1.4; }
+.team-card-tasks li::before { content: '→'; position: absolute; left: 0; color: #999; font-size: 10px; }
+.steps { display: flex; flex-direction: column; gap: 0; margin-top: 20px; }
+.step { display: grid; grid-template-columns: 52px 1fr; gap: 0; border: 2px solid var(--ink); border-bottom: none; background: #fff; }
+.step:first-child { border-top: var(--thick); }
+.step:last-child { border-bottom: var(--thick); }
+.step-left { background: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 14px 0 0; border-right: 2px solid var(--ink); }
+.step-num { font-family: var(--font-title); font-size: 26px; color: var(--red); letter-spacing: .04em; line-height: 1; }
+.step-dot { width: 2px; flex: 1; background: #333; margin: 8px 0; }
+.step:last-child .step-dot { display: none; }
+.step-body { padding: 14px 16px; }
+.step-title { font-family: var(--font-title); font-size: 17px; letter-spacing: .06em; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.step-who { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: .06em; padding: 2px 7px; border: 1.5px solid; font-weight: 600; }
+.step-who.ceo { border-color: var(--red); color: var(--red); background: var(--red-light); }
+.step-who.pm { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+.step-who.sdr { border-color: #059669; color: #059669; background: #f0fdf4; }
+.step-who.both { border-color: #7c3aed; color: #7c3aed; background: #f5f3ff; }
+.step-desc { font-size: 13px; color: #444; line-height: 1.6; }
+.risk-list { display: flex; flex-direction: column; gap: 0; border: var(--panel-border); box-shadow: var(--panel-shadow); }
+.risk-item { display: grid; grid-template-columns: 56px 1fr; gap: 0; background: #fff; border-bottom: 2px solid var(--ink); }
+.risk-item:last-child { border-bottom: none; }
+.risk-num-col { background: var(--paper2); border-right: 2px solid var(--ink); display: flex; align-items: center; justify-content: center; padding: 14px 8px; }
+.risk-emoji { font-size: 22px; line-height: 1; }
+.risk-body { padding: 12px 16px; }
+.risk-body strong { display: block; font-family: var(--font-title); font-size: 15px; letter-spacing: .04em; margin-bottom: 4px; }
+.risk-body p { font-size: 12.5px; color: #555; margin: 0; line-height: 1.55; }
+.doc-footer { max-width: 900px; margin: 48px auto 0; padding: 0 32px; }
+.footer-panel { background: var(--ink); border: var(--panel-border); padding: 10px 18px; font-family: var(--font-mono); font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: .1em; display: flex; gap: 16px; flex-wrap: wrap; }
+.footer-panel span.red { color: var(--red); }
+.sfx { font-family: var(--font-title); font-size: 13px; letter-spacing: .08em; color: var(--red); opacity: .5; position: absolute; pointer-events: none; user-select: none; transform: rotate(-12deg); right: 12px; top: 8px; }
+@media (max-width: 680px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { display: none; }
+  .layout, .doc-footer { padding: 0 16px; }
+  .header-inner { padding: 24px 16px; flex-direction: column; }
+  .header-title { font-size: 36px; }
+  .team-grid { grid-template-columns: 1fr; }
+  .team-card { border-right: none; border-bottom: 2px solid var(--ink); }
+  .team-card:last-child { border-bottom: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="speed-lines"></div>
+  <div class="header-inner">
+    <div class="header-icon-box">
+      <div class="icon-big">🛡</div>
+      <div class="icon-label">Sec. Email</div>
+    </div>
+    <div class="header-text">
+      <div class="header-breadcrumb">Documentation interne · Offres de service</div>
+      <div class="header-title">SPF·DKIM·DMARC</div>
+      <div class="header-subtitle">Sécurisation Identité Email — PME & E-commerce</div>
+      <div class="header-badges">
+        <span class="hbadge red">Usage interne</span>
+        <span class="hbadge white">v1.0</span>
+        <span class="hbadge green">Actif</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc">
+    <div style="height:32px"></div>
+    <div class="toc-panel">
+      <div class="toc-title">Sommaire</div>
+      <ul>
+        <li><a href="#offre"><span class="toc-num">01</span>L'offre</a></li>
+        <li><a href="#equipe"><span class="toc-num">02</span>L'équipe</a></li>
+        <li><a href="#processus"><span class="toc-num">03</span>Processus</a></li>
+        <li><a href="#prestataires"><span class="toc-num">04</span>Prestataires</a></li>
+        <li><a href="#risques"><span class="toc-num">05</span>Risques</a></li>
+        <li><a href="#modele"><span class="toc-num">06</span>Modèle éco.</a></li>
+        <li><a href="#glossaire"><span class="toc-num">07</span>Glossaire</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <section class="section">
+      <a class="section-anchor" id="offre"></a>
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div class="section-title-wrap">
+          <h2>Ce que l'on vend</h2>
+          <div class="section-tagline">Périmètre de l'offre</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="sfx">SECURE!!</div>
+        <p>Nous proposons un <strong>service de sécurisation de l'identité email</strong> destiné aux PME et aux e-commerces. L'objectif est de protéger les entreprises contre l'<strong>usurpation de leur domaine email</strong> — un vecteur d'attaque courant permettant à des tiers malveillants d'envoyer des emails en se faisant passer pour l'entreprise.</p>
+        <p>Le service couvre l'ensemble du cycle, de l'audit initial jusqu'au suivi post-déploiement. Nous ne faisons pas l'exécution technique directe : nous auditons, analysons, planifions et coordonnons des prestataires techniques qualifiés.</p>
+      </div>
+      <h3>Périmètre de l'offre</h3>
+      <div class="manga-table-wrap">
+        <table class="manga-table">
+          <thead><tr><th>Composante</th><th>Ce que cela recouvre</th><th>Qui l'exécute</th></tr></thead>
+          <tbody>
+            <tr><td>Audit SPF / DKIM / DMARC</td><td>Analyse de la configuration DNS existante, identification des incohérences et vulnérabilités</td><td>CEO + prestataire</td></tr>
+            <tr><td>Analyse des risques</td><td>Évaluation de l'exposition à l'usurpation, scoring du risque, cartographie des flux email (marketing, transactionnel, support)</td><td>CEO</td></tr>
+            <tr><td>Plan de remédiation</td><td>Feuille de route technique priorisée, séquençage des actions DNS, recommandations de politique DMARC progressive</td><td>CEO</td></tr>
+            <tr><td>Coordination prestataire</td><td>Sélection, briefing et supervision du prestataire technique qui implémente les changements DNS</td><td>Chef de projet</td></tr>
+            <tr><td>Suivi de mise en place</td><td>Vérification post-déploiement, tests d'envoi, validation des rapports DMARC, ajustements si nécessaire</td><td>Chef de projet + prestataire</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout info" style="margin-top:16px;">
+        <strong>🛡 Pourquoi c'est important pour nos clients</strong><br>
+        Un domaine mal configuré expose les clients finaux de nos clients à des emails frauduleux envoyés en leur nom — phishing, fraudes aux fournisseurs, usurpation de support. La correction protège aussi la délivrabilité des emails légitimes.
+      </div>
+    </section>
+
+    <section class="section">
+      <a class="section-anchor" id="equipe"></a>
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div class="section-title-wrap">
+          <h2>Organisation de l'équipe</h2>
+          <div class="section-tagline">Qui fait quoi</div>
+        </div>
+      </div>
+      <div class="team-grid">
+        <div class="team-card ceo">
+          <div class="team-card-role">Fondateur</div>
+          <div class="team-card-name">CEO</div>
+          <ul class="team-card-tasks">
+            <li>Conception et structuration de l'offre</li>
+            <li>Réalisation des audits techniques</li>
+            <li>Production du plan de remédiation</li>
+            <li>Relation client stratégique (décideurs)</li>
+            <li>Validation finale avant mise en prod</li>
+            <li>Sélection et qualification des prestataires</li>
+          </ul>
+        </div>
+        <div class="team-card pm">
+          <div class="team-card-role">Opérations</div>
+          <div class="team-card-name">Chef de projet</div>
+          <ul class="team-card-tasks">
+            <li>Gestion de la relation client au quotidien</li>
+            <li>Suivi des livrables et des délais</li>
+            <li>Coordination et briefing des prestataires</li>
+            <li>Vérification des livrables techniques</li>
+            <li>Compte-rendus et jalons de suivi</li>
+            <li>Escalade vers le CEO si anomalie</li>
+          </ul>
+        </div>
+        <div class="team-card sdr">
+          <div class="team-card-role">Croissance</div>
+          <div class="team-card-name">SDR</div>
+          <ul class="team-card-tasks">
+            <li>Prospection outbound (email, LinkedIn)</li>
+            <li>Qualification initiale des leads</li>
+            <li>Prise de RDV pour l'appel de qualification</li>
+            <li>Alimentation et mise à jour du CRM</li>
+            <li>Reporting hebdomadaire sur le pipeline</li>
+          </ul>
+        </div>
+      </div>
+      <div class="burst-wrap" style="margin-top:16px;">
+        <div class="burst-icon">!</div>
+        <div class="burst-body">
+          <strong>Principe de fonctionnement</strong>
+          Le SDR génère et pré-qualifie. Le CEO valide et audite. Le chef de projet opère et suit. Les prestataires exécutent sous supervision. Ce découpage permet de tenir la qualité sans sur-solliciter le CEO sur les tâches courantes.
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <a class="section-anchor" id="processus"></a>
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div class="section-title-wrap">
+          <h2>Processus de bout en bout</h2>
+          <div class="section-tagline">7 étapes · du lead à la validation</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-left"><div class="step-num">1</div><div class="step-dot"></div></div>
+          <div class="step-body">
+            <div class="step-title">Génération du lead <span class="step-who sdr">SDR</span></div>
+            <div class="step-desc">Le SDR identifie des prospects (PME avec activité transactionnelle email, e-commerce, SaaS B2B). Il effectue une première approche et pré-qualifie selon des critères simples : taille de l'entreprise, présence d'un domaine email custom, usage de plateformes d'envoi (Mailchimp, Klaviyo, Sendinblue…).</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-left"><div class="step-num">2</div><div class="step-dot"></div></div>
+          <div class="step-body">
+            <div class="step-title">Appel de qualification <span class="step-who ceo">CEO</span></div>
+            <div class="step-desc">Le CEO prend un appel de 20–30 minutes avec le décideur (CEO, DSI, responsable ops). Objectifs : comprendre l'environnement email, détecter la sensibilité au risque, évaluer la maturité technique et la capacité de décision. À l'issue, le CEO décide d'aller ou non vers un audit.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-left"><div class="step-num">3</div><div class="step-dot"></div></div>
+          <div class="step-body">
+            <div class="step-title">Analyse du besoin <span class="step-who ceo">CEO</span></div>
+            <div class="step-desc">Avant l'audit, le CEO documente le périmètre : domaines à couvrir, plateformes d'envoi actives, environnement de messagerie (Microsoft 365, Google Workspace, autre). Cette étape permet de dimensionner l'audit et de poser les bases du plan de remédiation.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-left"><div class="step-num">4</div><div class="step-dot"></div></div>
+          <div class="step-body">
+            <div class="step-title">Audit email <span class="step-who both">CEO + prest.</span></div>
+            <div class="step-desc">Analyse technique des enregistrements DNS : état des enregistrements <code>SPF</code>, <code>DKIM</code> et <code>DMARC</code>, présence de flux non déclarés, niveau de politique DMARC (<code>none</code> / <code>quarantine</code> / <code>reject</code>). L'audit produit un rapport structuré avec scoring de risque et liste des anomalies.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-left"><div class="step-num">5</div><div class="step-dot"></div></div>
+          <div class="step-body">
+            <div class="step-title">Plan de remédiation <span class="step-who ceo">CEO</span></div>
+            <div class="step-desc">Sur la base de l'audit, le CEO rédige un plan d'action priorisé. Il définit les modifications DNS à réaliser, la séquence de déploiement (toujours progressif pour DMARC), les risques associés à chaque étape et le rollback à prévoir. Ce plan est validé avec le client avant toute intervention.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-left"><div class="step-num">6</div><div class="step-dot"></div></div>
+          <div class="step-body">
+            <div class="step-title">Intervention prestataire <span class="step-who pm">Chef de projet + prest.</span></div>
+            <div class="step-desc">Le prestataire technique reçoit un brief précis du chef de projet : liste des actions à réaliser, accès requis (DNS, Microsoft 365, Google Workspace), checklist de validation. Le chef de projet supervise l'intervention. Aucune modification n'est faite sans validation du plan par le CEO au préalable.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-left"><div class="step-num">7</div><div class="step-dot"></div></div>
+          <div class="step-body">
+            <div class="step-title">Validation et suivi <span class="step-who pm">Chef de projet + CEO</span></div>
+            <div class="step-desc">Post-déploiement, le chef de projet effectue des tests d'envoi et vérifie les enregistrements DNS. Les rapports DMARC sont analysés sur les 2–4 premières semaines pour s'assurer qu'aucun flux légitime n'est bloqué. Un compte-rendu final est transmis au client. Si anomalie, le CEO est impliqué pour décision.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <a class="section-anchor" id="prestataires"></a>
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div class="section-title-wrap">
+          <h2>Rôle des prestataires externes</h2>
+          <div class="section-tagline">Périmètre d'intervention</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:var(--panel-border);box-shadow:var(--panel-shadow);">
+        <div style="background:#fff;padding:16px 18px;border-right:2px solid var(--ink);">
+          <h3 style="color:#059669;">Ce qu'ils font</h3>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Modifications des enregistrements DNS chez le registrar du client</li>
+            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Configuration DKIM dans Microsoft 365 ou Google Workspace</li>
+            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Mise à jour des enregistrements SPF selon le plan défini</li>
+            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Création ou modification de la politique DMARC</li>
+            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:#059669;font-weight:700;">✓</span>Documentation des accès et des modifications réalisées</li>
+          </ul>
+        </div>
+        <div style="background:var(--paper2);padding:16px 18px;">
+          <h3 style="color:var(--red);">Ce qu'ils ne font pas</h3>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Concevoir le plan de remédiation (rôle CEO)</li>
+            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Contact commercial direct avec le client</li>
+            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Prendre des décisions sur le périmètre ou la séquence</li>
+            <li style="font-size:13px;padding-left:14px;position:relative;color:#333;"><span style="position:absolute;left:0;color:var(--red);font-weight:700;">✗</span>Accéder aux informations commerciales ou contractuelles</li>
+          </ul>
+        </div>
+      </div>
+      <div class="burst-wrap" style="margin-top:16px;">
+        <div class="burst-icon">!</div>
+        <div class="burst-body">
+          <strong>Point de vigilance</strong>
+          Le prestataire n'intervient qu'avec un brief écrit validé par le CEO. Toute demande de modification hors périmètre doit être remontée au chef de projet avant exécution.
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <a class="section-anchor" id="risques"></a>
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div class="section-title-wrap">
+          <h2>Risques &amp; points de vigilance</h2>
+          <div class="section-tagline">Anticiper les effets de bord</div>
+        </div>
+      </div>
+      <div class="risk-list">
+        <div class="risk-item">
+          <div class="risk-num-col"><div class="risk-emoji">⚡</div></div>
+          <div class="risk-body">
+            <strong>Emails légitimes bloqués ou mis en quarantaine</strong>
+            <p>Si la politique DMARC est passée directement à <code>reject</code> sans phase intermédiaire <code>none</code> puis <code>quarantine</code>, des flux email légitimes non déclarés dans SPF peuvent être bloqués. Toujours adopter une montée en charge progressive.</p>
+          </div>
+        </div>
+        <div class="risk-item">
+          <div class="risk-num-col"><div class="risk-emoji">🔄</div></div>
+          <div class="risk-body">
+            <strong>Absence de rollback DNS préparé</strong>
+            <p>Avant toute modification DNS, le prestataire doit documenter l'état exact des enregistrements. En cas de problème, le rollback doit pouvoir être exécuté en moins de 30 minutes. Exiger cette documentation à chaque mission.</p>
+          </div>
+        </div>
+        <div class="risk-item">
+          <div class="risk-num-col"><div class="risk-emoji">📋</div></div>
+          <div class="risk-body">
+            <strong>Absence de checklist pré-mise en production</strong>
+            <p>Chaque mission doit s'appuyer sur une checklist standardisée : inventaire des flux email actifs, validation des accès DNS, test sur un domaine de staging si possible, confirmation client avant déploiement.</p>
+          </div>
+        </div>
+        <div class="risk-item">
+          <div class="risk-num-col"><div class="risk-emoji">📤</div></div>
+          <div class="risk-body">
+            <strong>Flux email non cartographiés</strong>
+            <p>Les clients utilisent souvent des outils tiers (CRM, e-commerce, outil marketing) qui envoient des emails en leur nom. Si ces expéditeurs ne sont pas inclus dans le SPF ou ne disposent pas de DKIM configuré, ils seront en échec DMARC.</p>
+          </div>
+        </div>
+        <div class="risk-item">
+          <div class="risk-num-col"><div class="risk-emoji">⏱</div></div>
+          <div class="risk-body">
+            <strong>Délais de propagation DNS</strong>
+            <p>Les modifications DNS ont un TTL qui conditionne la propagation mondiale. Une modification peut prendre de quelques minutes à 48 heures. Il ne faut pas interpréter une non-mise à jour immédiate comme un échec.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <a class="section-anchor" id="modele"></a>
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div class="section-title-wrap">
+          <h2>Modèle économique</h2>
+          <div class="section-tagline">Achat · revente · marge</div>
+        </div>
+      </div>
+      <div class="manga-table-wrap">
+        <table class="manga-table">
+          <thead><tr><th>Élément</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Achat prestataire</td><td>Facturation à la tâche ou au forfait par le prestataire technique. Coût variable selon la complexité (nombre de domaines, environnements à configurer).</td></tr>
+            <tr><td>Revente client</td><td>Package forfaitisé comprenant l'audit, le plan, la coordination et le suivi. Le client achète une prestation clé-en-main, pas de la régie technique.</td></tr>
+            <tr><td>Marge opérationnelle</td><td>Générée par la valeur ajoutée de l'expertise (audit, analyse de risque, plan), la coordination du prestataire et la gestion du risque pour le client.</td></tr>
+            <tr><td>Levier de scalabilité</td><td>En standardisant les audits et les plans de remédiation, le temps CEO par mission diminue au fil du temps. Le chef de projet peut gérer plusieurs missions en parallèle.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout success" style="margin-top:16px;">
+        <strong>💡 Principe clé</strong><br>
+        Le client ne paye pas pour des heures de configuration DNS. Il paye pour la certitude que le travail est bien fait, que les risques sont gérés, et qu'il n'a pas à coordonner lui-même des prestataires techniques qu'il ne sait pas briefer.
+      </div>
+    </section>
+
+    <section class="section">
+      <a class="section-anchor" id="glossaire"></a>
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <div class="section-title-wrap">
+          <h2>Glossaire technique simplifié</h2>
+          <div class="section-tagline">Pour les non-techniciens de l'équipe</div>
+        </div>
+      </div>
+      <div class="manga-table-wrap">
+        <table class="manga-table">
+          <thead><tr><th>Terme</th><th>Ce que c'est</th><th>À quoi ça sert</th></tr></thead>
+          <tbody>
+            <tr><td><code>SPF</code></td><td>Sender Policy Framework — liste des serveurs autorisés à envoyer des emails au nom d'un domaine</td><td>Empêche un serveur non autorisé d'envoyer des emails en se faisant passer pour le domaine</td></tr>
+            <tr><td><code>DKIM</code></td><td>DomainKeys Identified Mail — signature cryptographique attachée aux emails envoyés</td><td>Permet au destinataire de vérifier que l'email n'a pas été altéré et qu'il vient bien du domaine signataire</td></tr>
+            <tr><td><code>DMARC</code></td><td>Domain-based Message Authentication — politique qui indique quoi faire si SPF ou DKIM échoue</td><td>Définit si les emails frauduleux doivent être ignorés, mis en quarantaine ou rejetés ; génère des rapports</td></tr>
+            <tr><td>DNS</td><td>Domain Name System — système d'enregistrements associés à un nom de domaine</td><td>C'est là que sont stockés SPF, DKIM et DMARC. Modifier le DNS = modifier les règles d'authentification email</td></tr>
+            <tr><td>TTL</td><td>Time To Live — durée de validité d'un enregistrement DNS en cache</td><td>Détermine le délai de propagation d'une modification DNS dans le monde entier</td></tr>
+            <tr><td>Rollback</td><td>Retour à la configuration précédente</td><td>Procédure de sécurité pour annuler une modification DNS problématique rapidement</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="doc-footer">
+  <div class="footer-panel">
+    <span>Documentation interne</span>
+    <span>·</span>
+    <span class="red">SPF · DKIM · DMARC</span>
+    <span>·</span>
+    <span>Offre Sécurisation Email</span>
+    <span>·</span>
+    <span>v1.0</span>
+  </div>
+</footer>
+
+</body>
+</html>
